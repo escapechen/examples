@@ -8,7 +8,7 @@
 * setup github account to store source
 * setup docker hub to store docker image
 * docker env for OSX [Docker Desktop](https://hub.docker.com/editions/community/docker-ce-desktop-mac) .. macports is no option
-* 
+
 ## Ingress GO Piece (main.go)
 * the ingress example is based on [KubernetesAPI](https://github.com/kubernetes/client-go/tree/master/examples/in-cluster-client-configuration)
 * with some research and trial&error i found clientset.ExtensionsV1beta1().Ingresses("").List
