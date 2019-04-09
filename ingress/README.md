@@ -2,6 +2,7 @@
 ## Task
 * Setup and run Kubernetes Pod and use it to provide info about running Ingress Pods running in same cluster via Kubernetes API
 * expose found info via website
+![Ingress Example Picture](ingress-example-output.png)
 ## Prerequisites
 * kubectl with accessible cluster (creds in ~/.kube/config)
 * cluster-admin permissions to be able to create new roles
