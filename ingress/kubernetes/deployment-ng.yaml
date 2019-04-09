@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: go-listapp
+  name: go-listapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go-listapp
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: go-listapp
+    spec:
+      serviceAccountName: list-ingresses-service-account
+      containers:
+      - image: escapechen/examples:ingress
+        name: ingress
+      imagePullSecrets:
+      - name: marcelk-regcred              
+      dnsPolicy: Default
+status: {}

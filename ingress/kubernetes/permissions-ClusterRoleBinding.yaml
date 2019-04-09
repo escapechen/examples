@@ -1,0 +1,12 @@
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: list-ingresses-clusterrolebinding
+subjects:
+- kind: ServiceAccount
+  name: list-ingresses-service-account
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  name: list-ingresses-role
+  apiGroup: ""

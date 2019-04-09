@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: go-listapp
+  name: go-listapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go-listapp
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: go-listapp
+    spec:
+      serviceAccountName: list-ingresses-service-account
+      containers:
+      - image: debian:latest
+        name: debian-os
+        #command: ["/usr/bin/apt-get update", "/usr/bin/apt-get -y install ca-certificates wget","/bin/wget -O /work-dir/demoapp https://www.kuehns.org/kubernetesapi-demo","/bin/sleep 300"]
+        command: ["/bin/sh"]
+        #args: ["-c", "sleep 500"]
+        args: ["-c", "/usr/bin/apt-get update && /usr/bin/apt-get -y install ca-certificates wget && /usr/bin/wget -O /work-dir/ingresstest https://www.kuehns.org/ingress?foo=`date +%s` && chmod +x /work-dir/ingresstest && sleep 500"]
+        resources: {}
+        volumeMounts:
+        - name: workdir
+          mountPath: "/work-dir"
+      dnsPolicy: Default
+      volumes:
+      - name: workdir
+status: {}
