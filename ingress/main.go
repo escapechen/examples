@@ -18,6 +18,8 @@ import (
 	//"fmt"
 	//"time"
 	"github.com/davecgh/go-spew/spew"
+        "io"
+        "net/http"
 
 	//"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -46,17 +48,21 @@ func main() {
 		panic(err.Error())
 	}
 	for {
-		//pods, err := clientset.CoreV1().Pods("").List(metav1.ListOptions{})
-		ingresses, err := clientset.ExtensionsV1beta1().Ingresses("").List(metav1.ListOptions{})
-		if err != nil {
-			panic(err.Error())
+		narf := func(w http.ResponseWriter, _ *http.Request) {
+			//pods, err := clientset.CoreV1().Pods("").List(metav1.ListOptions{})
+			ingresses, err := clientset.ExtensionsV1beta1().Ingresses("").List(metav1.ListOptions{})
+			if err != nil {
+				panic(err.Error())
+			}
+			for _, ing := range ingresses.Items {
+				//spew.Dump(ing)
+				//needs major improvement, but hey output! 8)
+				mystring := spew.Sprintf(":: %s/%s > %s\n", ing.Namespace, ing.Name, ing.Spec.Rules)
+				io.WriteString(w, mystring)
+			}
 		}
-		for _, ing := range ingresses.Items {
-			//spew.Dump(ing)
-			// ing.Spec.Rules is a list/array of rules specified.
-			// You need to iterate over them, in Python I'd just explode the list into a single
-			// string, similar things can be done in Go
-			spew.Printf(":: %s/%s > %s\n", ing.Namespace, ing.Name, ing.Spec.Rules)
-		}
+		http.HandleFunc("/", narf)
+	        http.ListenAndServe(":8000", nil)
 	}
 }
+
