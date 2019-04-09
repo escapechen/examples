@@ -21,10 +21,14 @@
 `docker build -t ingress:tag .`
 * find new image and note Image ID
 `docker images`
-* tag new image for upload and push to private repo, new TAG avoids cache
+* tag new image for upload
 `docker tag <ID> escapechen/examples:ingress_NR`
+* push to private repo, new TAG skips kubernetes images cache (and may consume more disk)
 `docker push escapechen/examples:ingress_NR`
+* adjust _deployment-ng_ File with new image name/tag and deploy ...
 ## Kubernetes Piece (kubernetes/)
+* all files can be deployed using `kubectl apply -f <file.yaml>` 
+* all kubernetes objects (deployments|services|roles|etc.) can be taken down using `kubectl delete <type> <name>`
 * the _permission*_ Files deal with creating a dedicated service user which has only a very limited view on the cluster (basicall just view ingresses)
 * _listService_ File introduces this extra layer between ingresses and application, to allow them to die/jump between nodes etc. Assuming there is some iptables NAT going on in the back. In our case, it points to our app on port 8000 and listens on port 80 to receive data from the ingress nginx.
 * _ingress_ is the original ingress file for the initial LAB setup. I extended it to map /ingress to our new service. This way we also have a little bit more input for our Ingress Go Piece.
