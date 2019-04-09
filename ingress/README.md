@@ -37,3 +37,14 @@
 * _deployment-ng-viaWGET_ file for faster testing of new binary, since its a little tough to prototype things without local kube.
 * _missingPiece_ is the secret for the docker registry, which can be created via:
 `kubectl create secret docker-registry marcelk-regcred --docker-server=https://index.docker.io/v1/ --docker-username=escapechen --docker-password=NOBODY-KNOWS --docker-email=fancy@email.com`
+## Troubleshooting
+* Issue and no google results.. : 
+
+`alfredprivat:ingress marcel$ go build main.go
+ k8s.io/client-go/rest
+../../../../../pkg/mod/k8s.io/client-go@v11.0.0+incompatible/rest/request.go:598:31: not enough arguments in call to watch.NewStreamWatcher
+	have (*versioned.Decoder)
+	want (watch.Decoder, watch.Reporter)`
+* Solution, switch to bleeding edge:
+
+`go get k8s.io/client-go@master`
